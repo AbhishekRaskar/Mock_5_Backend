@@ -40,37 +40,10 @@ appointmentRouter.get("/", async (req, res) => {
         if (name) {
             search.name = { $regex: name, $options: "i" };
         }
-        appointmentRouter.get("/", async (req, res) => {
-            const { specialization, name, sort } = req.query;
-            try {
-                let search = {};
-                let sorting = {};
-
-                if (sort == "asc") {
-                    sorting.date = 1;
-                }
-                else if (sort == "desc") {
-                    sorting.date = -1;
-                }
-                else {
-                    sorting = null;
-                }
-                if (name) {
-                    search.name = name;
-                }
-                if (name) {
-                    search.name = { $regex: name, $options: "i" };
-                }
-                if (specialization) {
-                    search.specialization = specialization; 
-                }
-                const appointments = await appointmentModel.find(search).sort(sorting);
-                res.json(appointments);
-            }
-            catch (error) {
-                res.status(500).json({ error: error.message });
-            }
-        });
+        if (specialization) {
+            search.specialization = specialization; 
+        }
+      
         const appointments = await appointmentModel.find(search).sort(sorting);
         res.json(appointments);
     }
